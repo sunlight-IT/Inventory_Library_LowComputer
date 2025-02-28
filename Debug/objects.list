@@ -42,3 +42,4 @@
 "./Usr/module_driver/driver_wireless.o"
 "./Usr/module_middle/middle_event_process.o"
 "./Usr/module_middle/middle_fsm.o"
+"./Usr/tick/tick.o"

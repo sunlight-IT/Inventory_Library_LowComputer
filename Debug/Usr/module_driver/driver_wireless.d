@@ -1,6 +1,6 @@
 Usr/module_driver/driver_wireless.o: \
  ../Usr/module_driver/driver_wireless.c \
- ../Usr/module_driver/driver_wireless.h ../Core/Inc/usart.h \
+ ../Usr/module_driver/driver_wireless.h ../Core/Inc/dma.h \
  ../Core/Inc/main.h ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Core/Inc/stm32f1xx_hal_conf.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
@@ -34,11 +34,11 @@ Usr/module_driver/driver_wireless.o: \
  ../Core/Inc/tim.h ../Core/Inc/usart.h ../Core/Inc/gpio.h \
  ../Core/Inc/BLDCMotor.h ../Core/Inc/MainLogic.h \
  ../Core/Inc/Reader15693.h ../Core/Inc/WirelessModule.h \
- ../Core/Inc/ServoMotor.h ../Core/Inc/dma.h \
+ ../Core/Inc/ServoMotor.h ../Core/Inc/usart.h \
  ../Usr/module_driver/../log/my_log.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h
 ../Usr/module_driver/driver_wireless.h:
-../Core/Inc/usart.h:
+../Core/Inc/dma.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -80,6 +80,6 @@ Usr/module_driver/driver_wireless.o: \
 ../Core/Inc/Reader15693.h:
 ../Core/Inc/WirelessModule.h:
 ../Core/Inc/ServoMotor.h:
-../Core/Inc/dma.h:
+../Core/Inc/usart.h:
 ../Usr/module_driver/../log/my_log.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h:

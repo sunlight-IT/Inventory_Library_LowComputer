@@ -9,6 +9,7 @@ RM := rm -rf
 
 # All of the sources participating in the build are defined here
 -include sources.mk
+-include Usr/tick/subdir.mk
 -include Usr/module_middle/subdir.mk
 -include Usr/module_driver/subdir.mk
 -include Usr/module_apply/subdir.mk

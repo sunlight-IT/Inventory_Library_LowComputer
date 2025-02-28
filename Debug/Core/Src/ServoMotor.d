@@ -37,7 +37,7 @@ Core/Src/ServoMotor.o: ../Core/Src/ServoMotor.c ../Core/Inc/ServoMotor.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_motor.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_wireless.h \
- ../Core/Inc/usart.h ../Core/Inc/dma.h \
+ ../Core/Inc/dma.h ../Core/Inc/usart.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h
 ../Core/Inc/ServoMotor.h:
 ../Core/Inc/main.h:
@@ -85,6 +85,6 @@ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_motor.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_wireless.h:
-../Core/Inc/usart.h:
 ../Core/Inc/dma.h:
+../Core/Inc/usart.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h:

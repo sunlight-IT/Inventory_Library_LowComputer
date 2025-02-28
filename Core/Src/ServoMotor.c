@@ -53,6 +53,7 @@ void motor_uart_init(void) {
 
 uint8_t *GetMoterAck(void) { return motor_ack; }
 int8_t   GetMoterOnPos(void) { return ServoMotor.MotorPosition; };
+uint8_t  GetMoterFlag(void) { return ServoMotor.Flag_Event[2]; }
 /*****************************************/
 
 void test(uint8_t *buf) {
@@ -73,7 +74,7 @@ void Events_ServoMotor(void) {
 }
 
 void Event_Init_ServoMotor(void) {
-  LOGI("STATE :1 %d", ServoMotor.Flag_Event[1]);
+  // LOGI("STATE :1 %d", ServoMotor.Flag_Event[1]);
   switch (ServoMotor.Flag_Event[1]) {
     case 0: {
       SetStatus_Power_ServoMotor(PowerON_ServoMotor);  // 打开伺服驱动器的电源
@@ -307,8 +308,8 @@ void UartAction_ServoMotor(uint8_t *buf, uint8_t len) {
             case 3: {  // 发送了速度0,先要确保停下来，不然开启伺服会冲
               ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x00) ? 4 : 2;
             } break;
-            case 7: {  // 发送了速度1
-              ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x01) ? 8 : 6;
+            case 7: {  // 发送了速度5
+              ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x14) ? 8 : 6;
             } break;
             case 9: {
               if (ServoMotor.MotorPosition == Right_Position_ServoMotor) {  // 右//CCW往左动JOGmode_Data_CCW
@@ -369,7 +370,7 @@ void UartAction_ServoMotor(uint8_t *buf, uint8_t len) {
   }
 }
 void Event_Movement_ServoMotor(void) {
-  LOGI("STATE : %d", ServoMotor.Flag_Event[2]);
+  // LOGI("STATE : %d", ServoMotor.Flag_Event[2]);
   switch (ServoMotor.Flag_Event[2]) {
     case 0: {                     // 判断是否校准
       if (!ServoMotor.IsReset) {  // 没有校准
@@ -394,10 +395,10 @@ void Event_Movement_ServoMotor(void) {
       ServoMotor.Flag_Event[2] = 5;                                // 等待串口返回，赋值6，超时赋值4
     } break;
     case 6: {
-      //   ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      //   Uart_Send_MovementRegister_ServoMotor(3, 1);  // 设置速度1
-      LOGI("%d", motor_move());
-      ServoMotor.Flag_Event[2] = 6;  // 等待串口返回，赋值8，超时赋值6
+      ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
+      Uart_Send_MovementRegister_ServoMotor(3, 20);  // 设置速度1
+
+      ServoMotor.Flag_Event[2] = 7;  // 等待串口返回，赋值8，超时赋值6
     } break;
     case 8: {
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
@@ -430,7 +431,7 @@ void Event_Movement_ServoMotor(void) {
       if (LimitSensorON_ServoMotor == HAL_GPIO_ReadPin(LimitSensor_ServoMotor_GPIO_Port, LimitSensor_ServoMotor_Pin)) {  // 刚好回去
         ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
         Uart_Send_MovementRegister_ServoMotor(3, 0);  // 设置速度0，停止
-        ServoMotor.Flag_Event[2] = 15;                // 等待串口返回，赋值16，超时赋值14
+        ServoMotor.Flag_Event[2] = 14;                // 等待串口返回，赋值16，超时赋值14
       }
       if (0) {  // 扭矩过大要停下来
         ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
@@ -441,12 +442,12 @@ void Event_Movement_ServoMotor(void) {
     // 缺一个开始信号
     case 16: {
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      if (0x01 == GetCmdType()) {
-        Uart_Send_MovementRegister_ServoMotor(3, 1);  // 设置速度1，
-        ServoMotor.Flag_Event[2] = 18;
-      } else {
-        ServoMotor.Flag_Event[2] = 16;  // 等待串口返回，赋值18，超时赋值16
-      }
+      // if (0x01 == GetCmdType()) {
+      //   Uart_Send_MovementRegister_ServoMotor(3, 1);  // 设置速度1，
+      //   ServoMotor.Flag_Event[2] = 18;
+      // } else {
+      //   ServoMotor.Flag_Event[2] = 16;  // 等待串口返回，赋值18，超时赋值16
+      // }
       //   Uart_Send_MovementRegister_ServoMotor(2, PTmode_Data_P1_01); // 已经归位，重置脉冲计数,写入PT模式
     } break;
     case 18: {  // 设置了PT模式，发送清除脉冲的指令，设置DI2
@@ -522,6 +523,7 @@ void TimerTasks_ServoMotor(void) {
 }
 void ResetTimerFlag_ServoMotor(uint16_t *TimerFlag) { *TimerFlag = 0; }
 void Uart_Send_MovementRegister_ServoMotor(uint8_t mode, uint16_t Data) {
+  LOGI("Send mov massage");
   switch (mode) {
     case 0: {  // 查询监视器1-5内容
       Uart_ReadWriteRegister_ServoMotor(Cmd_Read_Func_ServoMotor, 10, MonitorRegister_1_Data, 0, Set_null_ServoMotor);
@@ -679,7 +681,7 @@ void UartReceiveIT_ServoMotor(void) {                                       // �
   HAL_UART_Receive_IT(&huart_ServoMotor, (uint8_t *)Rxdbuf_ServoMotor, 1);  // 重新启动接收中断
 }
 void UartGetData_ServoMotor(void) {  // 处理接收到的数据到新的数组，并重新接收
-  if (ServoMotor.Flag_Event[2] >= 6) {
+  if (ServoMotor.Flag_Event[2] >= 14) {
     MotorUart.type = kMoterUart;
     LOGI("EVENT MOTOR");
   }

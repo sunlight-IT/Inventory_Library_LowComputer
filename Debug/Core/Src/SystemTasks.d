@@ -35,7 +35,7 @@ Core/Src/SystemTasks.o: ../Core/Src/SystemTasks.c \
  ../Core/Inc/Reader15693.h ../Core/Inc/WirelessModule.h \
  ../Core/Inc/ServoMotor.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_wireless.h \
- ../Core/Inc/usart.h ../Core/Inc/dma.h
+ ../Core/Inc/dma.h ../Core/Inc/usart.h
 ../Core/Inc/SystemTasks.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
@@ -79,5 +79,5 @@ Core/Src/SystemTasks.o: ../Core/Src/SystemTasks.c \
 ../Core/Inc/WirelessModule.h:
 ../Core/Inc/ServoMotor.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_wireless.h:
-../Core/Inc/usart.h:
 ../Core/Inc/dma.h:
+../Core/Inc/usart.h:

@@ -1,3 +1,0 @@
-../Usr/module_middle/middle_event_process.c:12:6:reg_event	16	static
-../Usr/module_middle/middle_event_process.c:23:6:event_datapack_process	16	static
-../Usr/module_middle/middle_event_process.c:37:6:event_cmd_process	4	static

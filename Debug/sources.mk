@@ -30,4 +30,5 @@ Usr/log \
 Usr/module_apply \
 Usr/module_driver \
 Usr/module_middle \
+Usr/tick \
 
