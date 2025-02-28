@@ -1,0 +1,12 @@
+../Core/Src/Template.c:18:6:UartAction_Template	2
+../Core/Src/Template.c:31:6:Events_Template	2
+../Core/Src/Template.c:46:6:Event_Init_Template	6
+../Core/Src/Template.c:78:6:TimerTasks_Template	5
+../Core/Src/Template.c:104:6:UartWrite_Cmd_Template	2
+../Core/Src/Template.c:117:6:UartReceiveIT_Template	1
+../Core/Src/Template.c:121:6:UartGetData_Template	1
+../Core/Src/Template.c:127:6:UartWrite_Template	1
+../Core/Src/Template.c:131:9:UartRead_Template	3
+../Core/Src/Template.c:145:6:UartRxdMonitor_Template	5
+../Core/Src/Template.c:173:6:UartDriver_Template	2
+../Core/Src/Template.c:185:6:UartWrite_Add_MSB_CRC16_Template	2

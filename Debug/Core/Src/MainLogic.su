@@ -1,0 +1,3 @@
+../Core/Src/MainLogic.c:13:9:Events_MainLogic	8	static
+../Core/Src/MainLogic.c:42:6:Uart_Driver1	4	static
+../Core/Src/MainLogic.c:43:6:Uart_Driver2	24	static

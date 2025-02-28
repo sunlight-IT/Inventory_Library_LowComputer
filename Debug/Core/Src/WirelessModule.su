@@ -1,0 +1,13 @@
+../Core/Src/WirelessModule.c:17:6:Events_WirelessModule	8	static
+../Core/Src/WirelessModule.c:32:6:Event_Init_WirelessModule	8	static
+../Core/Src/WirelessModule.c:67:6:TimerTasks_WirelessModule	8	static
+../Core/Src/WirelessModule.c:72:6:UartWrite_Cmd_WirelessModule	16	static
+../Core/Src/WirelessModule.c:84:6:UartAction_WirelessModule	24	static
+../Core/Src/WirelessModule.c:117:6:UartReceiveIT_WirelessModule	8	static
+../Core/Src/WirelessModule.c:121:6:UartGetData_WirelessModule	8	static
+../Core/Src/WirelessModule.c:127:6:UartWrite_WirelessModule	16	static
+../Core/Src/WirelessModule.c:131:9:UartRead_WirelessModule	24	static
+../Core/Src/WirelessModule.c:145:6:UartRxdMonitor_WirelessModule	16	static
+../Core/Src/WirelessModule.c:173:6:UartDriver_WirelessModule	264	static
+../Core/Src/WirelessModule.c:184:6:Get_MODBUSCRC16_WirelessModule	32	static
+../Core/Src/WirelessModule.c:204:6:UartWrite_Add_MODBUS_CRC16_WirelessModule	280	static

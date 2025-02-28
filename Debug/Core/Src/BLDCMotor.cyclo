@@ -1,0 +1,8 @@
+../Core/Src/BLDCMotor.c:24:6:Events_BLDCMotor	3
+../Core/Src/BLDCMotor.c:39:6:Event_Init_BLDCMotor	3
+../Core/Src/BLDCMotor.c:57:6:Event_Action_BLDCMotor	5
+../Core/Src/BLDCMotor.c:90:8:GetStatus_CurrentPosition_BLDCMotor	1
+../Core/Src/BLDCMotor.c:96:6:SetStatus_Reset_BLDCMotor	1
+../Core/Src/BLDCMotor.c:100:9:GetStatus_Reset_BLDCMotor	1
+../Core/Src/BLDCMotor.c:104:6:SetStatus_Power_BLDCMotor	1
+../Core/Src/BLDCMotor.c:109:9:GetStatus_Power_BLDCMotor	1

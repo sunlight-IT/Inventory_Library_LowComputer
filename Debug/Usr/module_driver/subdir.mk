@@ -5,12 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Usr/module_driver/driver_motor.c \
 ../Usr/module_driver/driver_wireless.c 
 
 OBJS += \
+./Usr/module_driver/driver_motor.o \
 ./Usr/module_driver/driver_wireless.o 
 
 C_DEPS += \
+./Usr/module_driver/driver_motor.d \
 ./Usr/module_driver/driver_wireless.d 
 
 
@@ -21,7 +24,7 @@ Usr/module_driver/%.o Usr/module_driver/%.su Usr/module_driver/%.cyclo: ../Usr/m
 clean: clean-Usr-2f-module_driver
 
 clean-Usr-2f-module_driver:
-	-$(RM) ./Usr/module_driver/driver_wireless.cyclo ./Usr/module_driver/driver_wireless.d ./Usr/module_driver/driver_wireless.o ./Usr/module_driver/driver_wireless.su
+	-$(RM) ./Usr/module_driver/driver_motor.cyclo ./Usr/module_driver/driver_motor.d ./Usr/module_driver/driver_motor.o ./Usr/module_driver/driver_motor.su ./Usr/module_driver/driver_wireless.cyclo ./Usr/module_driver/driver_wireless.d ./Usr/module_driver/driver_wireless.o ./Usr/module_driver/driver_wireless.su
 
 .PHONY: clean-Usr-2f-module_driver
 

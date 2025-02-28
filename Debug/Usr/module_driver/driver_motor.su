@@ -1,0 +1,3 @@
+../Usr/module_driver/driver_motor.c:28:13:motor_move	8	static
+../Usr/module_driver/driver_motor.c:59:13:moter_speed_set	8	static
+../Usr/module_driver/driver_motor.c:93:13:moter_set_move	8	static

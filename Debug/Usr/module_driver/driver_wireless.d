@@ -36,7 +36,7 @@ Usr/module_driver/driver_wireless.o: \
  ../Core/Inc/Reader15693.h ../Core/Inc/WirelessModule.h \
  ../Core/Inc/ServoMotor.h ../Core/Inc/dma.h \
  ../Usr/module_driver/../log/my_log.h \
- S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_process.h
+ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h
 ../Usr/module_driver/driver_wireless.h:
 ../Core/Inc/usart.h:
 ../Core/Inc/main.h:
@@ -82,4 +82,4 @@ Usr/module_driver/driver_wireless.o: \
 ../Core/Inc/ServoMotor.h:
 ../Core/Inc/dma.h:
 ../Usr/module_driver/../log/my_log.h:
-S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_process.h:
+S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h:

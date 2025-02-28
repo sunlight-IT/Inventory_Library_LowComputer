@@ -38,8 +38,7 @@
 #define __STM32F1XX_H
 
 #ifdef __cplusplus
-extern "C"
-{
+extern "C" {
 #endif /* __cplusplus */
 
 /** @addtogroup Library_configuration_section
@@ -51,15 +50,15 @@ extern "C"
  */
 #if !defined(STM32F1)
 #define STM32F1
+
 #endif /* STM32F1 */
 
-  /* Uncomment the line below according to the target STM32L device used in your
-     application
-    */
+/* Uncomment the line below according to the target STM32L device used in your
+   application
+  */
 
-#if !defined(STM32F100xB) && !defined(STM32F100xE) && !defined(STM32F101x6) &&                                                                            \
-    !defined(STM32F101xB) && !defined(STM32F101xE) && !defined(STM32F101xG) && !defined(STM32F102x6) && !defined(STM32F102xB) && !defined(STM32F103x6) && \
-    !defined(STM32F103xB) && !defined(STM32F103xE) && !defined(STM32F103xG) && !defined(STM32F105xC) && !defined(STM32F107xC)
+#if !defined(STM32F100xB) && !defined(STM32F100xE) && !defined(STM32F101x6) && !defined(STM32F101xB) && !defined(STM32F101xE) && !defined(STM32F101xG) && !defined(STM32F102x6) && !defined(STM32F102xB) && !defined(STM32F103x6) && !defined(STM32F103xB) && !defined(STM32F103xE) && \
+    !defined(STM32F103xG) && !defined(STM32F105xC) && !defined(STM32F107xC)
 /* #define STM32F100xB  */ /*!< STM32F100C4, STM32F100R4, STM32F100C6, STM32F100R6, STM32F100C8, STM32F100R8, STM32F100V8, STM32F100CB, STM32F100RB and STM32F100VB */
 /* #define STM32F100xE */  /*!< STM32F100RC, STM32F100VC, STM32F100ZC, STM32F100RD, STM32F100VD, STM32F100ZD, STM32F100RE, STM32F100VE and STM32F100ZE */
 /* #define STM32F101x6  */ /*!< STM32F101C4, STM32F101R4, STM32F101T4, STM32F101C6, STM32F101R6 and STM32F101T6 Devices */
@@ -77,17 +76,17 @@ extern "C"
 #define STM32F103xG
 #endif
 
-  /*  Tip: To avoid modifying this file each time you need to switch between these
-          devices, you can define the device in your toolchain compiler preprocessor.
-    */
+/*  Tip: To avoid modifying this file each time you need to switch between these
+        devices, you can define the device in your toolchain compiler preprocessor.
+  */
 
 #if !defined(USE_HAL_DRIVER)
-  /**
-   * @brief Comment the line below if you will not use the peripherals drivers.
-     In this case, these drivers will not be included and the application code will
-     be based on direct access to peripherals registers
-     */
-  /*#define USE_HAL_DRIVER */
+/**
+ * @brief Comment the line below if you will not use the peripherals drivers.
+   In this case, these drivers will not be included and the application code will
+   be based on direct access to peripherals registers
+   */
+/*#define USE_HAL_DRIVER */
 #endif /* USE_HAL_DRIVER */
 
 /**
@@ -96,16 +95,16 @@ extern "C"
 #define __STM32F1_CMSIS_VERSION_MAIN (0x04) /*!< [31:24] main version */
 #define __STM32F1_CMSIS_VERSION_SUB1 (0x03) /*!< [23:16] sub1 version */
 #define __STM32F1_CMSIS_VERSION_SUB2 (0x04) /*!< [15:8]  sub2 version */
-#define __STM32F1_CMSIS_VERSION_RC (0x00)   /*!< [7:0]  release candidate */
-#define __STM32F1_CMSIS_VERSION ((__STM32F1_CMSIS_VERSION_MAIN << 24) | (__STM32F1_CMSIS_VERSION_SUB1 << 16) | (__STM32F1_CMSIS_VERSION_SUB2 << 8) | (__STM32F1_CMSIS_VERSION_RC))
+#define __STM32F1_CMSIS_VERSION_RC   (0x00) /*!< [7:0]  release candidate */
+#define __STM32F1_CMSIS_VERSION      ((__STM32F1_CMSIS_VERSION_MAIN << 24) | (__STM32F1_CMSIS_VERSION_SUB1 << 16) | (__STM32F1_CMSIS_VERSION_SUB2 << 8) | (__STM32F1_CMSIS_VERSION_RC))
 
-  /**
-   * @}
-   */
+/**
+ * @}
+ */
 
-  /** @addtogroup Device_Included
-   * @{
-   */
+/** @addtogroup Device_Included
+ * @{
+ */
 
 #if defined(STM32F100xB)
 #include "stm32f100xb.h"
@@ -139,32 +138,19 @@ extern "C"
 #error "Please select first the target STM32F1xx device used in your application (in stm32f1xx.h file)"
 #endif
 
-  /**
-   * @}
-   */
+/**
+ * @}
+ */
 
-  /** @addtogroup Exported_types
-   * @{
-   */
-  typedef enum
-  {
-    RESET = 0,
-    SET = !RESET
-  } FlagStatus,
-      ITStatus;
+/** @addtogroup Exported_types
+ * @{
+ */
+typedef enum { RESET = 0, SET = !RESET } FlagStatus, ITStatus;
 
-  typedef enum
-  {
-    DISABLE = 0,
-    ENABLE = !DISABLE
-  } FunctionalState;
+typedef enum { DISABLE = 0, ENABLE = !DISABLE } FunctionalState;
 #define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
 
-  typedef enum
-  {
-    SUCCESS = 0U,
-    ERROR = !SUCCESS
-  } ErrorStatus;
+typedef enum { SUCCESS = 0U, ERROR = !SUCCESS } ErrorStatus;
 
 /**
  * @}
@@ -192,73 +178,61 @@ extern "C"
 /* Use of CMSIS compiler intrinsics for register exclusive access */
 /* Atomic 32-bit register access macro to set one or several bits */
 #define ATOMIC_SET_BIT(REG, BIT)                              \
-  do                                                          \
-  {                                                           \
+  do {                                                        \
     uint32_t val;                                             \
-    do                                                        \
-    {                                                         \
+    do {                                                      \
       val = __LDREXW((__IO uint32_t *)&(REG)) | (BIT);        \
     } while ((__STREXW(val, (__IO uint32_t *)&(REG))) != 0U); \
   } while (0)
 
 /* Atomic 32-bit register access macro to clear one or several bits */
 #define ATOMIC_CLEAR_BIT(REG, BIT)                            \
-  do                                                          \
-  {                                                           \
+  do {                                                        \
     uint32_t val;                                             \
-    do                                                        \
-    {                                                         \
+    do {                                                      \
       val = __LDREXW((__IO uint32_t *)&(REG)) & ~(BIT);       \
     } while ((__STREXW(val, (__IO uint32_t *)&(REG))) != 0U); \
   } while (0)
 
 /* Atomic 32-bit register access macro to clear and set one or several bits */
 #define ATOMIC_MODIFY_REG(REG, CLEARMSK, SETMASK)                          \
-  do                                                                       \
-  {                                                                        \
+  do {                                                                     \
     uint32_t val;                                                          \
-    do                                                                     \
-    {                                                                      \
+    do {                                                                   \
       val = (__LDREXW((__IO uint32_t *)&(REG)) & ~(CLEARMSK)) | (SETMASK); \
     } while ((__STREXW(val, (__IO uint32_t *)&(REG))) != 0U);              \
   } while (0)
 
 /* Atomic 16-bit register access macro to set one or several bits */
 #define ATOMIC_SETH_BIT(REG, BIT)                             \
-  do                                                          \
-  {                                                           \
+  do {                                                        \
     uint16_t val;                                             \
-    do                                                        \
-    {                                                         \
+    do {                                                      \
       val = __LDREXH((__IO uint16_t *)&(REG)) | (BIT);        \
     } while ((__STREXH(val, (__IO uint16_t *)&(REG))) != 0U); \
   } while (0)
 
 /* Atomic 16-bit register access macro to clear one or several bits */
 #define ATOMIC_CLEARH_BIT(REG, BIT)                           \
-  do                                                          \
-  {                                                           \
+  do {                                                        \
     uint16_t val;                                             \
-    do                                                        \
-    {                                                         \
+    do {                                                      \
       val = __LDREXH((__IO uint16_t *)&(REG)) & ~(BIT);       \
     } while ((__STREXH(val, (__IO uint16_t *)&(REG))) != 0U); \
   } while (0)
 
 /* Atomic 16-bit register access macro to clear and set one or several bits */
 #define ATOMIC_MODIFYH_REG(REG, CLEARMSK, SETMASK)                         \
-  do                                                                       \
-  {                                                                        \
+  do {                                                                     \
     uint16_t val;                                                          \
-    do                                                                     \
-    {                                                                      \
+    do {                                                                   \
       val = (__LDREXH((__IO uint16_t *)&(REG)) & ~(CLEARMSK)) | (SETMASK); \
     } while ((__STREXH(val, (__IO uint16_t *)&(REG))) != 0U);              \
   } while (0)
 
-  /**
-   * @}
-   */
+/**
+ * @}
+ */
 
 #if defined(USE_HAL_DRIVER)
 #include "stm32f1xx_hal.h"

@@ -27,6 +27,7 @@ Core/Src \
 Core/Startup \
 Drivers/STM32F1xx_HAL_Driver/Src \
 Usr/log \
+Usr/module_apply \
 Usr/module_driver \
 Usr/module_middle \
 

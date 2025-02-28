@@ -1,0 +1,9 @@
+../Usr/module_driver/driver_wireless.c:22:6:wireless_reg_handle	1
+../Usr/module_driver/driver_wireless.c:26:6:wireless_event_init	1
+../Usr/module_driver/driver_wireless.c:31:6:wireless_init	1
+../Usr/module_driver/driver_wireless.c:39:21:GetWireLessHandle	2
+../Usr/module_driver/driver_wireless.c:44:6:wireless_send	1
+../Usr/module_driver/driver_wireless.c:46:6:wireless_packet_analys	2
+../Usr/module_driver/driver_wireless.c:55:6:wireless_receive	3
+../Usr/module_driver/driver_wireless.c:63:9:GetCmdType	2
+../Usr/module_driver/driver_wireless.c:72:6:receive_rx_data	1
