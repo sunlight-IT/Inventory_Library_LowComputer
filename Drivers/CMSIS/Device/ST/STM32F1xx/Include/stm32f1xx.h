@@ -50,7 +50,6 @@ extern "C" {
  */
 #if !defined(STM32F1)
 #define STM32F1
-
 #endif /* STM32F1 */
 
 /* Uncomment the line below according to the target STM32L device used in your

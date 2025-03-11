@@ -40,19 +40,19 @@ uint8_t        Flag_UartRegroup_ASCII_ServoMotor = 0;
 
 /****************自己的************************/
 
-static Event_t MotorUart;
 static uint8_t motor_ack[2];
+static uint8_t motor_state_reg[4];
 
 static void moteruart_receive(void);
 
-void motor_uart_init(void) {
-  MotorUart.type = kPackIdle;
-  MotorUart.func = moteruart_receive;
-  reg_event(&MotorUart);
+void motor_uart_init(void) {  //
+  registCallback(EVENT_MotorUart, moteruart_receive);
 }
 
 uint8_t *GetMoterAck(void) { return motor_ack; }
-int8_t   GetMoterOnPos(void) { return ServoMotor.MotorPosition; };
+uint8_t *GetMoterStateReg(void) { return motor_state_reg; }
+int8_t   GetMoterOnPos(void) { return ServoMotor.MotorPosition; }
+uint8_t  GetMoterFlag(void) { return ServoMotor.Flag_Event[2]; }
 /*****************************************/
 
 void test(uint8_t *buf) {
@@ -73,7 +73,7 @@ void Events_ServoMotor(void) {
 }
 
 void Event_Init_ServoMotor(void) {
-  LOGI("STATE :1 %d", ServoMotor.Flag_Event[1]);
+  LOGI("STATE : %d", ServoMotor.Flag_Event[1]);
   switch (ServoMotor.Flag_Event[1]) {
     case 0: {
       SetStatus_Power_ServoMotor(PowerON_ServoMotor);  // 打开伺服驱动器的电源
@@ -286,11 +286,9 @@ void UartAction_ServoMotor(uint8_t *buf, uint8_t len) {
         } break;
         case DI2_PulseClear_Register_P2_11: {
           switch (ServoMotor.Flag_Event[2]) {
-            // case 19:
-            // { // DI2设置，脉冲清除
-            // 	ServoMotor.Flag_Event[2] = DI2_PulseClear_Start_Data_P2_11 == (((uint16_t)uartbuf[4] << 8) | uartbuf[5]) ? 20 : 18;
-            // }
-            break;
+            case 19: {  // DI2设置，脉冲清除
+              ServoMotor.Flag_Event[2] = DI2_PulseClear_Start_Data_P2_11 == (((uint16_t)uartbuf[4] << 8) | uartbuf[5]) ? 20 : 16;
+            } break;
             case 21: {  // DI2复位，恢复脉冲计数
               ServoMotor.Flag_Event[2] = DI2_PulseClear_End_Data_P2_11 == (((uint16_t)uartbuf[4] << 8) | uartbuf[5]) ? 22 : 20;
             } break;
@@ -307,8 +305,8 @@ void UartAction_ServoMotor(uint8_t *buf, uint8_t len) {
             case 3: {  // 发送了速度0,先要确保停下来，不然开启伺服会冲
               ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x00) ? 4 : 2;
             } break;
-            case 7: {  // 发送了速度1
-              ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x01) ? 8 : 6;
+            case 7: {  // 发送了速度5
+              ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x14) ? 8 : 6;
             } break;
             case 9: {
               if (ServoMotor.MotorPosition == Right_Position_ServoMotor) {  // 右//CCW往左动JOGmode_Data_CCW
@@ -331,7 +329,8 @@ void UartAction_ServoMotor(uint8_t *buf, uint8_t len) {
               ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x00) ? 16 : 14;
             } break;
             case 17: {
-              ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x01) ? 18 : 16;
+              ServoMotor.Flag_Event[2] = DI2_PulseClear_Start_Data_P2_11 == (((uint16_t)uartbuf[4] << 8) | uartbuf[5]) ? 18 : 16;
+              // ServoMotor.Flag_Event[2] = (uartbuf[4] == 0x00 && uartbuf[5] == 0x01) ? 18 : 16;
             } break;
             case 19: {
               if (ServoMotor.MotorPosition == Right_Position_ServoMotor) {  // 右//CCW往左动JOGmode_Data_CCW
@@ -369,7 +368,7 @@ void UartAction_ServoMotor(uint8_t *buf, uint8_t len) {
   }
 }
 void Event_Movement_ServoMotor(void) {
-  LOGI("STATE : %d", ServoMotor.Flag_Event[2]);
+  // LOGI("STATE : %d", ServoMotor.Flag_Event[2]);
   switch (ServoMotor.Flag_Event[2]) {
     case 0: {                     // 判断是否校准
       if (!ServoMotor.IsReset) {  // 没有校准
@@ -394,10 +393,10 @@ void Event_Movement_ServoMotor(void) {
       ServoMotor.Flag_Event[2] = 5;                                // 等待串口返回，赋值6，超时赋值4
     } break;
     case 6: {
-      //   ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      //   Uart_Send_MovementRegister_ServoMotor(3, 1);  // 设置速度1
-      LOGI("%d", motor_move());
-      ServoMotor.Flag_Event[2] = 6;  // 等待串口返回，赋值8，超时赋值6
+      ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
+      Uart_Send_MovementRegister_ServoMotor(3, 20);  // 设置速度1
+
+      ServoMotor.Flag_Event[2] = 7;  // 等待串口返回，赋值8，超时赋值6
     } break;
     case 8: {
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
@@ -441,40 +440,25 @@ void Event_Movement_ServoMotor(void) {
     // 缺一个开始信号
     case 16: {
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      if (0x01 == GetCmdType()) {
-        Uart_Send_MovementRegister_ServoMotor(3, 1);  // 设置速度1，
-        ServoMotor.Flag_Event[2] = 18;
-      } else {
-        ServoMotor.Flag_Event[2] = 16;  // 等待串口返回，赋值18，超时赋值16
-      }
-      //   Uart_Send_MovementRegister_ServoMotor(2, PTmode_Data_P1_01); // 已经归位，重置脉冲计数,写入PT模式
+      Uart_Send_MovementRegister_ServoMotor(4, DI2_PulseClear_Start_Data_P2_11);
+      ServoMotor.Flag_Event[2] = 19;  // 等待串口返回，赋值18，超时赋值16
+
     } break;
-    case 18: {  // 设置了PT模式，发送清除脉冲的指令，设置DI2
+    case 20: {  // 设置了PT模式，发送清除脉冲的指令，设置DI2
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      // 判断电机方向 ServoMotor.MotorPosition，在右则往右动，在左则往左动
-      if (ServoMotor.MotorPosition == Right_Position_ServoMotor) {        // 右
-        Uart_Send_MovementRegister_ServoMotor(3, JOGmode_Data_CCW);       // cCW往右动
-      } else if (ServoMotor.MotorPosition == Left_Position_ServoMotor) {  // 左
-        Uart_Send_MovementRegister_ServoMotor(3, JOGmode_Data_CW);        // CCW往左动
-      }
-      // Uart_Send_MovementRegister_ServoMotor(4, DI2_PulseClear_Start_Data_P2_11); // 已经归位，重置脉冲计数,写入PT模式
-      ServoMotor.Flag_Event[2] = 19;  // 等待串口返回，赋值20，超时赋值18
+      Uart_Send_MovementRegister_ServoMotor(4, DI2_PulseClear_End_Data_P2_11);
+      ServoMotor.Flag_Event[2] = 21;  // 等待串口返回，赋值20，超时赋值18
     } break;
-    case 20: {  // 设置了PT模式，发送清除脉冲的指令，复位DI2
+    case 22: {  // 设置了PT模式，发送清除脉冲的指令，复位DI2
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      if (0x00 == GetCmdType()) {
-        Uart_Send_MovementRegister_ServoMotor(3, 0);  // 设置速度0，
-        ServoMotor.Flag_Event[2] = 22;
-      } else {
-        ServoMotor.Flag_Event[2] = 20;  // 等待串口返回，赋值18，超时赋值16
-      }
+      ServoMotor.Flag_Event[2] = 22;
       // Uart_Send_MovementRegister_ServoMotor(4, DI2_PulseClear_End_Data_P2_11); // 已经归位，重置脉冲计数,写入PT模式
       // ServoMotor.Flag_Event[2] = 21; // 等待串口返回，赋值22，超时赋值20
     } break;
-    case 22: {  // 脉冲已经重置了，设置成Sz模式
+    case 23: {  // 脉冲已经重置了，设置成Sz模式
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
       // Uart_Send_MovementRegister_ServoMotor(4, Szmode_Data_P1_01); // 已经归位，重置脉冲计数,写入PT模式
-      ServoMotor.Flag_Event[2] = 23;  // 等待串口返回，赋值24，超时赋值22
+      ServoMotor.Flag_Event[2] = 22;  // 等待串口返回，赋值24，超时赋值22
     } break;
     case 24: {
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
@@ -522,6 +506,7 @@ void TimerTasks_ServoMotor(void) {
 }
 void ResetTimerFlag_ServoMotor(uint16_t *TimerFlag) { *TimerFlag = 0; }
 void Uart_Send_MovementRegister_ServoMotor(uint8_t mode, uint16_t Data) {
+  // LOGI("Send mov massage");
   switch (mode) {
     case 0: {  // 查询监视器1-5内容
       Uart_ReadWriteRegister_ServoMotor(Cmd_Read_Func_ServoMotor, 10, MonitorRegister_1_Data, 0, Set_null_ServoMotor);
@@ -679,9 +664,9 @@ void UartReceiveIT_ServoMotor(void) {                                       // �
   HAL_UART_Receive_IT(&huart_ServoMotor, (uint8_t *)Rxdbuf_ServoMotor, 1);  // 重新启动接收中断
 }
 void UartGetData_ServoMotor(void) {  // 处理接收到的数据到新的数组，并重新接收
-  if (ServoMotor.Flag_Event[2] >= 6) {
-    MotorUart.type = kMoterUart;
-    LOGI("EVENT MOTOR");
+  if (ServoMotor.Flag_Event[2] >= 22) {
+    enterQueueEvent(EVENT_MotorUart);
+    // LOGI("EVENT MOTOR");
   }
   UartRegroup_ASCII_ServoMotor();
 
@@ -704,13 +689,14 @@ uint8_t Get_Regroup_ASCII(uint8_t data, uint8_t H_L) {
   }
   return 0;
 }
-
+/****************************自己的***************************************/
 void moteruart_receive(void) {
-  uint8_t len    = 0;
-  uint8_t lenbuf = 0;
-  uint8_t buf[255];
-  uint8_t uartbuf[255];
-  LOGI("SUCESS UART MOTOR");
+  uint8_t  len    = 0;
+  uint8_t  lenbuf = 0;
+  uint8_t  buf[255];
+  uint8_t  uartbuf[255];
+  uint32_t mm;
+  // LOGI("SUCESS UART MOTOR");
 
   len    = UartRead_ServoMotor(buf, sizeof(buf));
   lenbuf = len / 2;
@@ -719,14 +705,25 @@ void moteruart_receive(void) {
   }
 
   if (uartbuf[0] != ServoMotor.address && uartbuf[1] != (uint8_t)(ServoMotor.UartCurrentCmd[0] & 0xFF)) {
+    LOGI("address error ");
     return;
   }
+
   motor_ack[0] = uartbuf[4];
   motor_ack[1] = uartbuf[5];
 
-  //   if ((uartbuf[4] == 0x00 && uartbuf[5] == 0x01)) {
-  //   }
+  motor_state_reg[0] = uartbuf[3];
+  motor_state_reg[1] = uartbuf[4];
+  motor_state_reg[2] = uartbuf[5];
+  motor_state_reg[3] = uartbuf[6];
+
+  // for (int i = 0; i < 8; i++)  //
+  //   LOGI("data is %02x", uartbuf[i]);
+  // mm = get_Position_mm(motor_state_reg, 4);
+  // LOGI("distance is %d", mm);
 }
+
+/*******************************************************************/
 
 void UartRegroup_ASCII_ServoMotor(void) {
   if (Flag_UartRegroup_ASCII_ServoMotor == 2) {

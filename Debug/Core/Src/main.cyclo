@@ -1,0 +1,4 @@
+../Core/Src/main.c:89:17:CRC16_Calculate	4
+../Core/Src/main.c:113:5:main	19
+../Core/Src/main.c:317:6:SystemClock_Config	4
+../Core/Src/main.c:362:6:Error_Handler	1

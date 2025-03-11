@@ -6,3 +6,5 @@
 //   kBook          = 0x02,
 //   kWirelessIdle  = 0xff,
 // } ENUM_CMD;
+
+void cmd_process(void);

@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (12.3.rel1)
+# Toolchain: GNU Tools for STM32 (13.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -14,6 +14,8 @@ RM := rm -rf
 -include Usr/module_driver/subdir.mk
 -include Usr/module_apply/subdir.mk
 -include Usr/log/subdir.mk
+-include Usr/component/cmd_process/subdir.mk
+-include Usr/component/book_database/subdir.mk
 -include Drivers/STM32F1xx_HAL_Driver/Src/subdir.mk
 -include Core/Startup/subdir.mk
 -include Core/Src/subdir.mk

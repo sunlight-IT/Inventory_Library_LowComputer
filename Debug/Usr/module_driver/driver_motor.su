@@ -1,0 +1,10 @@
+../Usr/module_driver/driver_motor.c:34:6:servo_info_updata	16	static
+../Usr/module_driver/driver_motor.c:41:9:get_servo_info	16	static
+../Usr/module_driver/driver_motor.c:43:10:get_Position_mm	32	static
+../Usr/module_driver/driver_motor.c:83:13:moter_get_pos	16	static
+../Usr/module_driver/driver_motor.c:116:10:get_servo_pos	16	static
+../Usr/module_driver/driver_motor.c:125:13:motor_move	16	static
+../Usr/module_driver/driver_motor.c:156:13:motor_stop	8	static
+../Usr/module_driver/driver_motor.c:158:13:moter_speed_set	16	static
+../Usr/module_driver/driver_motor.c:201:13:servo_move	32	static
+../Usr/module_driver/driver_motor.c:243:13:moter_set_move	24	static

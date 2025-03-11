@@ -7,8 +7,6 @@
 
 #include "MainLogic.h"
 
-
-
 uint8_t Flag_Events_MainLogic = 0;
 void    Events_MainLogic(void) {
   switch (Flag_Events_MainLogic) {
@@ -18,8 +16,8 @@ void    Events_MainLogic(void) {
       Flag_Events_MainLogic = 1;
     } break;
     case 1: {
-      // Events_Reader15693();//读写器事件
-      // Events_WirelessModule();//无线串口事件
+      // Events_Reader15693();//璇诲啓鍣ㄤ簨浠�
+      // Events_WirelessModule();//鏃犵嚎涓插彛浜嬩欢
       // Events_BLDCMotor();
       Events_ServoMotor();
     } break;

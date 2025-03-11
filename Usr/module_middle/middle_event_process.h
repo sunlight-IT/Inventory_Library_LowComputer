@@ -1,23 +1,30 @@
 #pragma once
 #include "stdint.h"
 
-#define EVENT_NUM 16
+#define EVENT_QUEUE_SIZE 16
 
-typedef void (*event_process_func)(void);
+typedef void (*event_callback)(void);
 
 typedef enum {
-  kPackIdle,
-  kWireLess,
-  kMoterUart,
-  kCmd,
-  // 预留事件处理函数
-} ENUM_DATA_PACK_EVENT;
+  EVENT_Wirless,
+  EVENT_UpperUart,
+  EVENT_MotorUart,
+  // kTrace,
+  // kShow,
+  // 事件处理
+  EVENT_MAX,
+} EVENT_TYPE;
 
 typedef struct {
-  ENUM_DATA_PACK_EVENT type;
-  event_process_func   func;
-  // 预留事件处理函数
-} Event_t;
+  EVENT_TYPE     type;
+  event_callback callback;
+
+  // 事件处理函数
+} EVENT_t;
+
+void registCallback(EVENT_TYPE type, event_callback cb);
+void enterQueueEvent(EVENT_TYPE type);
+void process_event(void);
 
 // typedef struct {
 //   uint8_t  num;
@@ -26,6 +33,6 @@ typedef struct {
 //   uint8_t  UID[8];
 // } BOOK_DATA_t;
 
-void reg_event(Event_t *h_event);
-void event_datapack_process(void);
-void event_data_book(const uint8_t *data, uint8_t len);
+// void attach_event(EVENT_t *h_event);
+// void event_datapack_process(void);
+// void event_data_book(const uint8_t *data, uint8_t len);

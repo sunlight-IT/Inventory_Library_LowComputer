@@ -28,8 +28,10 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "component/cmd_process/cmd_process.h"
 #include "log/my_log.h"
 #include "module_driver/driver_motor.h"
+#include "module_driver/driver_upper.h"
 #include "module_driver/driver_wireless.h"
 #include "module_middle/middle_event_process.h"
 #include "tick/tick.h"
@@ -64,13 +66,13 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+typedef enum {
+  kWirelessStop  = 0x00,
+  kWirelessStart = 0x01,
+  kBook          = 0x02,
+  kWirelessIdle  = 0xff,
+} ENUM_CMD;
 
-/* USER CODE END 0 */
-
-/**
- * @brief  The application entry point.
- * @retval int
- */
 uint32_t cmd;
 
 static uint8_t  pandian_flag;
@@ -78,6 +80,35 @@ static uint32_t pandian_time;
 
 static uint8_t data_book;
 static uint8_t flag;
+
+static ENUM_CMD move_state      = kWirelessIdle;
+static uint32_t distance_target = 300;
+
+static uint8_t crc_cal[] = {0xd0, 0x20, 0x01, 0x0a, 0x0b, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xff, 0x01, 0x0C, 0xA1, 0xd1};
+
+static uint16_t CRC16_Calculate(uint8_t *data, uint8_t len) {
+  uint16_t crc16 = 0xffff;
+  uint16_t temp  = 0;
+  for (int i = 0; i < len; i++) {
+    crc16 ^= (uint16_t)data[i];
+    for (int j = 0; j < 8; j++) {
+      if (crc16 & 0x0001) {
+        crc16 = (crc16 >> 1) ^ 0xa001;
+      } else {
+        crc16 = (crc16 >> 1);
+      }
+    }
+  }
+  LOGI("CRC is :%04x", crc16);
+  return crc16;
+}
+
+/* USER CODE END 0 */
+
+/**
+ * @brief  The application entry point.
+ * @retval int
+ */
 
 int main(void) {
   /* USER CODE BEGIN 1 */
@@ -117,59 +148,59 @@ int main(void) {
   wireless_reg_handle(&huart1, &hdma_usart1_rx);
   wireless_init();
 
-  motor_uart_init();
-  /* USER CODE END 2 */
+  upper_uart_reg_handle(&huart4, &hdma_uart4_rx);
+  upper_uart_init();
 
+  motor_uart_init();
+  // servo_info_updata();
+  /* USER CODE END 2 */
+  CRC16_Calculate(crc_cal, sizeof(crc_cal));
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
-    event_datapack_process();
+    process_event();
     Events_MainLogic();
-    if (GetMoterFlag() >= 14) {
-      // LOGI("CMD %0x2", cmd);
-      // start and stop check
-      cmd = GetCmdType();
-      switch (cmd) {
-        case kWirelessIdle:
-          break;
-        case kWirelessStart:
-          if (motor_move(30, KGoRight)) {
-            ClearCmd();
-            pandian_flag = 1;
-            pandian_time = HAL_GetTick();
-          }
-          break;
-        case kWirelessStop:
-          if (motor_stop()) {
-            ClearCmd();
-            pandian_flag = 0xff;
-          }
-          break;
-        case kBook:
-          break;
+
+    // send_lower(kInit, 0x05);
+    // LOGI("TEST");
+    // if (get_transmit_state()) {  // 接收到数据开始转移
+    // transfer_process();
+    //}
+    if (GetMoterFlag() >= 22) {
+      transfer_process();
+
+      if (get_action_mode() == 0x01 && !pandian_flag) {
+        switch (move_state) {
+          case kWirelessIdle:
+            move_state = kWirelessStart;
+            break;
+          case kWirelessStart:
+            if (motor_move(30, KGoRight)) {
+              servo_info_updata(KGoRight, 30);
+              pandian_flag = 1;
+            }
+            break;
+        }
       }
-      // check process
+
       switch (pandian_flag) {
         case 1:
-          if (has_pass_time(pandian_time) > 12000) {
-            // moter_speed_set(0);
-            data_book    = 1;
+          uint16_t pos1 = get_Position_mm(GetMoterStateReg(), 4);
+          if (pos1 >= distance_target && pos1 != 0xff) {
             pandian_flag = 2;
             LOGI("check finish %d", pandian_flag);
           }
-
           break;
         case 2:
           if (motor_stop()) {
             pandian_flag = 3;
-            // LOGI("Back");
             LOGI("Back %d ", pandian_flag);
           }
 
           break;
         case 3:
           if (motor_move(30, KGoLeft)) {
-            pandian_time = HAL_GetTick();
+            servo_info_updata(KGoLeft, 30);
             pandian_flag = 4;
 
             LOGI("Back move %d", pandian_flag);
@@ -177,11 +208,11 @@ int main(void) {
 
           break;
         case 4:
-          if (has_pass_time(pandian_time) > 12000) {
+          uint16_t pos = get_Position_mm(GetMoterStateReg(), 4);
+          if (pos <= distance_target - 100 && pos != 0) {
             pandian_flag = 5;
             LOGI("back finish %d", pandian_flag);
           }
-
           break;
         case 5:
           if (motor_stop()) {
@@ -191,24 +222,92 @@ int main(void) {
 
           break;
         default:
-          // if (flag == 1) LOGI(" %d ", pandian_flag);
+
           break;
       }
 
-      // switch (data_book) {
-      //   case 0:
+      // transfer_process();
 
+      // start and stop check
+      // cmd = GetCmdType();
+      // switch (cmd) {
+      //   case kWirelessIdle:
       //     break;
-      //   case 1:
-      //     LOGI("wait book");
+      //   case kWirelessStart:
+      //     if (motor_move(30, KGoRight)) {
+      //       ClearCmd();
+      //       pandian_flag = 1;
+      //       pandian_time = HAL_GetTick();
+      //     }
+      //     break;
+      //   case kWirelessStop:
+      //     if (motor_stop()) {
+      //       ClearCmd();
+      //       pandian_flag = 0xff;
+      //     }
+      //     break;
+      //   case kBook:
       //     break;
       // }
-      // send data
-    } /* USER CODE END WHILE */
+      // // check process
+      // switch (pandian_flag) {
+      //   case 1:
+      //     // if (has_pass_time(pandian_time) > 12000) {
+      //     //   data_book    = 1;
+      //     //   pandian_flag = 2;
+      //     //   LOGI("check finish %d", pandian_flag);
+      //     // }
+      //     if (distance_target <= get_Position_mm(GetMoterStateReg(), 4)) {
+      //       Uart_Send_MovementRegister_ServoMotor(0, 0);
+      //       pandian_flag = 2;
+      //       LOGI("check finish %d", pandian_flag);
+      //     }
+      //     break;
+      //   case 2:
+      //     if (motor_stop()) {
+      //       pandian_flag = 3;
 
-    /* USER CODE BEGIN 3 */
+      //       LOGI("Back %d ", pandian_flag);
+      //     }
+
+      //     break;
+      //   case 3:
+      //     if (motor_move(30, KGoLeft)) {
+      //       pandian_time = HAL_GetTick();
+      //       pandian_flag = 4;
+
+      //       LOGI("Back move %d", pandian_flag);
+      //     }
+
+      //     break;
+      //   case 4:
+      //     // if (has_pass_time(pandian_time) > 12000) {
+      //     //   pandian_flag = 5;
+      //     //   LOGI("back finish %d", pandian_flag);
+      //     // }
+      //     if ((distance_target - 100) <= get_Position_mm(GetMoterStateReg(), 4)) {
+      //       pandian_flag = 5;
+      //       LOGI("back finish %d", pandian_flag);
+      //     }
+      //     break;
+      //   case 5:
+      //     if (motor_stop()) {
+      //       pandian_flag = 6;
+      //       LOGI("OK %d ", pandian_flag);
+      //     }
+
+      //     break;
+      //   default:
+
+      //     break;
+      // }
+
+      /* USER CODE END WHILE */
+
+      /* USER CODE BEGIN 3 */
+    }
+    /* USER CODE END 3 */
   }
-  /* USER CODE END 3 */
 }
 
 /**

@@ -5,12 +5,12 @@
 
 #define WIRELESS_MAX_BUF_LEN 256
 
-typedef enum {
-  kWirelessStop  = 0x00,
-  kWirelessStart = 0x01,
-  kBook          = 0x02,
-  kWirelessIdle  = 0xff,
-} ENUM_CMD;
+// typedef enum {
+//   kWirelessStop  = 0x00,
+//   kWirelessStart = 0x01,
+//   kBook          = 0x02,
+//   kWirelessIdle  = 0xff,
+// } ENUM_CMD;
 
 typedef struct {
   uint8_t j;

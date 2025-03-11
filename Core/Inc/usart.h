@@ -42,6 +42,10 @@ extern UART_HandleTypeDef huart2;
 
 extern UART_HandleTypeDef huart3;
 
+extern DMA_HandleTypeDef hdma_uart4_rx;
+extern DMA_HandleTypeDef hdma_usart1_rx;
+extern DMA_HandleTypeDef hdma_usart2_rx;
+
 /* USER CODE BEGIN Private defines */
 
 /* USER CODE END Private defines */
@@ -61,4 +65,3 @@ void MX_USART3_UART_Init(void);
 #endif
 
 #endif /* __USART_H__ */
-

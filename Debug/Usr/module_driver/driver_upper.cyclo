@@ -1,0 +1,6 @@
+../Usr/module_driver/driver_upper.c:19:6:upper_uart_reg_handle	1
+../Usr/module_driver/driver_upper.c:24:6:upper_uart_init	1
+../Usr/module_driver/driver_upper.c:30:21:GetUpperUartHandle	2
+../Usr/module_driver/driver_upper.c:37:17:CRC16_Calculate	4
+../Usr/module_driver/driver_upper.c:54:6:upper_packet_analys	5
+../Usr/module_driver/driver_upper.c:89:6:upper_receive_rx_data	1

@@ -1,3 +1,3 @@
-../Core/Src/MainLogic.c:13:9:Events_MainLogic	3
-../Core/Src/MainLogic.c:42:6:Uart_Driver1	1
-../Core/Src/MainLogic.c:43:6:Uart_Driver2	1
+../Core/Src/MainLogic.c:11:9:Events_MainLogic	3
+../Core/Src/MainLogic.c:40:6:Uart_Driver1	1
+../Core/Src/MainLogic.c:41:6:Uart_Driver2	1

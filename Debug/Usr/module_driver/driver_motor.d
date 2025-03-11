@@ -1,7 +1,7 @@
 Usr/module_driver/driver_motor.o: ../Usr/module_driver/driver_motor.c \
  ../Usr/module_driver/driver_motor.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h \
- ../Core/Inc/ServoMotor.h ../Core/Inc/main.h \
+ ../Core/Inc/usart.h ../Core/Inc/main.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Core/Inc/stm32f1xx_hal_conf.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
@@ -35,11 +35,12 @@ Usr/module_driver/driver_motor.o: ../Usr/module_driver/driver_motor.c \
  ../Core/Inc/tim.h ../Core/Inc/usart.h ../Core/Inc/gpio.h \
  ../Core/Inc/BLDCMotor.h ../Core/Inc/MainLogic.h \
  ../Core/Inc/Reader15693.h ../Core/Inc/WirelessModule.h \
- ../Core/Inc/ServoMotor.h \
- S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/log/my_log.h
+ ../Core/Inc/ServoMotor.h ../Core/Inc/ServoMotor.h \
+ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/log/my_log.h \
+ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/tick/tick.h
 ../Usr/module_driver/driver_motor.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h:
-../Core/Inc/ServoMotor.h:
+../Core/Inc/usart.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -81,4 +82,6 @@ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr
 ../Core/Inc/Reader15693.h:
 ../Core/Inc/WirelessModule.h:
 ../Core/Inc/ServoMotor.h:
+../Core/Inc/ServoMotor.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/log/my_log.h:
+S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/tick/tick.h:
