@@ -769,7 +769,7 @@ void UartRegroup_ASCII_ServoMotor(void) {
         // }
         moteruart_receive();
         // enterQueueEvent(EVENT_MotorUart);
-        Servo.uart_recv_state = true;
+        Servo_info.uart_recv_state = true;
         // LOGI("EVENT MOTOR");
       }
     } break;

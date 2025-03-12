@@ -33,11 +33,15 @@ typedef enum {
   KGoRight = 0x0C,
 } ENUM_MOTOR_MOTION;
 
-extern Motor_t Servo;
+extern Motor_t Servo_info;
 
-FSM_STATE_t motor_move(uint16_t speed, ENUM_MOTOR_MOTION go_direction);
-FSM_STATE_t moter_speed_set(uint16_t speed);
-FSM_STATE_t motor_stop(void);
+void     servo_info_set(uint8_t pos);
+Motor_t* get_servo_set_info(void);
+uint16_t get_servo_set_info_speed(void);
+
+FSM_STATE_t servo_speed_set(uint16_t speed);
+
+FSM_STATE_t servo_move(ENUM_MOTOR_MOTION direction);
 
 Motor_t get_servo_info(void);
 

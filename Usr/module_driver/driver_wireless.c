@@ -61,7 +61,7 @@ void wireless_packet_analys(void) {
   bool     transmit_state = get_transmit_state();
   LOGI("WIRLESS");
   if (type == 0x70) {
-    if (CRC16_Calculate(&rx_buf, 6 + pack_len)) {
+    if (CRC16_Calculate(&rx_buf, 5 + pack_len)) {
       LOGE("CRC error");
       return;
     }

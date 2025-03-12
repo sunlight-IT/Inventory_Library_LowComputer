@@ -18,7 +18,7 @@ typedef struct {
 
 typedef enum {
   kInit            = 0x00,
-  kInquireBook     = 0x10,
+  kInquireBookNum  = 0x10,
   kInquireBookInfo = 0x11,
   kMoveAction      = 0x20,
   kInquire         = 0x21,

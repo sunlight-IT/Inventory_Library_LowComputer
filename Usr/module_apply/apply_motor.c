@@ -51,9 +51,9 @@ FSM_STATE_t check_book(ENUM_MOTOR_MOTION go_direction) {
       }
       s_State = MOTOR_STOP;
     case MOTOR_STOP:
-      if (!motor_stop()) {
-        break;
-      }
+      // if (!motor_stop()) {
+      //   break;
+      // }
 
       if (direction) {
         s_State = MOTOR_MOVING;
