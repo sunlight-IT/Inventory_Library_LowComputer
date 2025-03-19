@@ -1,5 +1,6 @@
-Usr/module_driver/driver_upper.o: ../Usr/module_driver/driver_upper.c \
- ../Usr/module_driver/driver_upper.h ../Core/Inc/usart.h \
+Usr/communicate/middle_upper.o: ../Usr/communicate/middle_upper.c \
+ ../Usr/communicate/middle_upper.h \
+ ../Usr/communicate/middle_communicate_both.h ../Core/Inc/ServoMotor.h \
  ../Core/Inc/main.h ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h \
  ../Core/Inc/stm32f1xx_hal_conf.h \
  ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_rcc.h \
@@ -34,12 +35,15 @@ Usr/module_driver/driver_upper.o: ../Usr/module_driver/driver_upper.c \
  ../Core/Inc/BLDCMotor.h ../Core/Inc/MainLogic.h \
  ../Core/Inc/Reader15693.h ../Core/Inc/WirelessModule.h \
  ../Core/Inc/ServoMotor.h \
- S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/component/cmd_process/cmd_process.h \
+ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/component/endianness_change.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/log/my_log.h \
- S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h \
- S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h
-../Usr/module_driver/driver_upper.h:
-../Core/Inc/usart.h:
+ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_motor.h \
+ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h \
+ ../Core/Inc/usart.h \
+ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h
+../Usr/communicate/middle_upper.h:
+../Usr/communicate/middle_communicate_both.h:
+../Core/Inc/ServoMotor.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h:
 ../Core/Inc/stm32f1xx_hal_conf.h:
@@ -81,7 +85,9 @@ Usr/module_driver/driver_upper.o: ../Usr/module_driver/driver_upper.c \
 ../Core/Inc/Reader15693.h:
 ../Core/Inc/WirelessModule.h:
 ../Core/Inc/ServoMotor.h:
-S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/component/cmd_process/cmd_process.h:
+S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/component/endianness_change.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/log/my_log.h:
-S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h:
+S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_motor.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h:
+../Core/Inc/usart.h:
+S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h:

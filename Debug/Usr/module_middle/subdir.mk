@@ -5,14 +5,17 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Usr/module_middle/middle_book_database.c \
 ../Usr/module_middle/middle_event_process.c \
 ../Usr/module_middle/middle_fsm.c 
 
 OBJS += \
+./Usr/module_middle/middle_book_database.o \
 ./Usr/module_middle/middle_event_process.o \
 ./Usr/module_middle/middle_fsm.o 
 
 C_DEPS += \
+./Usr/module_middle/middle_book_database.d \
 ./Usr/module_middle/middle_event_process.d \
 ./Usr/module_middle/middle_fsm.d 
 
@@ -24,7 +27,7 @@ Usr/module_middle/%.o Usr/module_middle/%.su Usr/module_middle/%.cyclo: ../Usr/m
 clean: clean-Usr-2f-module_middle
 
 clean-Usr-2f-module_middle:
-	-$(RM) ./Usr/module_middle/middle_event_process.cyclo ./Usr/module_middle/middle_event_process.d ./Usr/module_middle/middle_event_process.o ./Usr/module_middle/middle_event_process.su ./Usr/module_middle/middle_fsm.cyclo ./Usr/module_middle/middle_fsm.d ./Usr/module_middle/middle_fsm.o ./Usr/module_middle/middle_fsm.su
+	-$(RM) ./Usr/module_middle/middle_book_database.cyclo ./Usr/module_middle/middle_book_database.d ./Usr/module_middle/middle_book_database.o ./Usr/module_middle/middle_book_database.su ./Usr/module_middle/middle_event_process.cyclo ./Usr/module_middle/middle_event_process.d ./Usr/module_middle/middle_event_process.o ./Usr/module_middle/middle_event_process.su ./Usr/module_middle/middle_fsm.cyclo ./Usr/module_middle/middle_fsm.d ./Usr/module_middle/middle_fsm.o ./Usr/module_middle/middle_fsm.su
 
 .PHONY: clean-Usr-2f-module_middle
 

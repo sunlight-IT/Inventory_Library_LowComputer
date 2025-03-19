@@ -1,0 +1,14 @@
+../Usr/communicate/middle_upper.c:26:6:upper_communite_init	8	static
+../Usr/communicate/middle_upper.c:28:17:CRC16_Calculate	32	static
+../Usr/communicate/middle_upper.c:45:6:notify_up_push	24	static
+../Usr/communicate/middle_upper.c:64:10:notify_up_pop	152	static
+../Usr/communicate/middle_upper.c:77:9:data_pack_upper	24	static
+../Usr/communicate/middle_upper.c:114:6:send_upper	24	static
+../Usr/communicate/middle_upper.c:130:6:_send_upper	32	static
+../Usr/communicate/middle_upper.c:159:6:move_data_pack	32	static
+../Usr/communicate/middle_upper.c:177:6:book_num_pack	24	static
+../Usr/communicate/middle_upper.c:179:6:book_info_pack	32	static
+../Usr/communicate/middle_upper.c:202:6:init_data_pack	24	static
+../Usr/communicate/middle_upper.c:257:6:upp_send	280	static
+../Usr/communicate/middle_upper.c:320:10:get_upper_cache	4	static
+../Usr/communicate/middle_upper.c:321:10:set_upper_recv_len	16	static

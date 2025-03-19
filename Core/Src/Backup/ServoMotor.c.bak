@@ -43,10 +43,24 @@ uint8_t        Flag_UartRegroup_ASCII_ServoMotor = 0;
 static uint8_t motor_ack[2];
 static uint8_t motor_state_reg[4];
 
+static UART_HandleTypeDef *m_uart;
+static DMA_HandleTypeDef  *m_dma;
+
 static void moteruart_receive(void);
 
 void motor_uart_init(void) {  //
   registCallback(EVENT_MotorUart, moteruart_receive);
+}
+
+void motor_reg_handle(UART_HandleTypeDef *h_uart, DMA_HandleTypeDef *h_dma) {
+  m_uart = h_uart;
+  m_dma  = h_dma;
+}
+
+void motor_init(void) {
+  registCallback(EVENT_MotorUart, moteruart_receive);  // 注册事件表
+  // HAL_UARTEx_ReceiveToIdle_DMA(m_uart, rx_buf, sizeof(rx_buf));  // 串口�?�?+dma
+  // __HAL_DMA_DISABLE_IT(m_dma, DMA_IT_HT);                        // 关闭dma接收半满�?�?函数
 }
 
 uint8_t *GetMoterAck(void) { return motor_ack; }
@@ -368,7 +382,7 @@ void UartAction_ServoMotor(uint8_t *buf, uint8_t len) {
   }
 }
 void Event_Movement_ServoMotor(void) {
-  // LOGI("STATE : %d", ServoMotor.Flag_Event[2]);
+  LOGI("STATE : %d", ServoMotor.Flag_Event[2]);
   switch (ServoMotor.Flag_Event[2]) {
     case 0: {                     // 判断是否校准
       if (!ServoMotor.IsReset) {  // 没有校准
@@ -664,10 +678,7 @@ void UartReceiveIT_ServoMotor(void) {                                       // �
   HAL_UART_Receive_IT(&huart_ServoMotor, (uint8_t *)Rxdbuf_ServoMotor, 1);  // 重新启动接收中断
 }
 void UartGetData_ServoMotor(void) {  // 处理接收到的数据到新的数组，并重新接收
-  if (ServoMotor.Flag_Event[2] >= 22) {
-    enterQueueEvent(EVENT_MotorUart);
-    // LOGI("EVENT MOTOR");
-  }
+
   UartRegroup_ASCII_ServoMotor();
 
   UartReceiveIT_ServoMotor();
@@ -709,13 +720,21 @@ void moteruart_receive(void) {
     return;
   }
 
-  motor_ack[0] = uartbuf[4];
-  motor_ack[1] = uartbuf[5];
+  switch (uartbuf[1]) {
+    case Cmd_Read_Func_ServoMotor:
+      motor_state_reg[0] = uartbuf[3];
+      motor_state_reg[1] = uartbuf[4];
+      motor_state_reg[2] = uartbuf[5];
+      motor_state_reg[3] = uartbuf[6];
 
-  motor_state_reg[0] = uartbuf[3];
-  motor_state_reg[1] = uartbuf[4];
-  motor_state_reg[2] = uartbuf[5];
-  motor_state_reg[3] = uartbuf[6];
+      break;
+    case Cmd_Write_Once_Func_ServoMotor:
+      motor_ack[0] = uartbuf[4];
+      motor_ack[1] = uartbuf[5];
+      break;
+    case Cmd_Write_Multi_Func_ServoMotor:
+      break;
+  }
 
   // for (int i = 0; i < 8; i++)  //
   //   LOGI("data is %02x", uartbuf[i]);
@@ -726,6 +745,7 @@ void moteruart_receive(void) {
 /*******************************************************************/
 
 void UartRegroup_ASCII_ServoMotor(void) {
+  // static bool clear_falg;
   if (Flag_UartRegroup_ASCII_ServoMotor == 2) {
     Flag_UartRegroup_ASCII_ServoMotor = Rxdbuf_ServoMotor[0] == 0x0D ? 3 : 1;
   }
@@ -742,6 +762,16 @@ void UartRegroup_ASCII_ServoMotor(void) {
     } break;
     case 3: {  // 0x0D
       Flag_UartRegroup_ASCII_ServoMotor = 4;
+      if (ServoMotor.Flag_Event[2] >= 22) {
+        // if (!clear_falg) {
+        //   memset(UartRxd_ServoMotor, 0, 255);
+        //   clear_falg = true;
+        // }
+        moteruart_receive();
+        // enterQueueEvent(EVENT_MotorUart);
+        Servo_info.uart_recv_state = true;
+        // LOGI("EVENT MOTOR");
+      }
     } break;
     case 4: {  // 0x0A
       Flag_UartRxdMonitor_ServoMotor = 1;

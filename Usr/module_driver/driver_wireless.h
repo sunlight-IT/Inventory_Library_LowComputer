@@ -25,7 +25,3 @@ void wireless_reg_handle(UART_HandleTypeDef *h_uart, DMA_HandleTypeDef *h_dma);
 void wireless_init(void);
 
 void wireless_send(uint8_t *data, uint8_t len);
-void wireless_receive(void);
-
-uint8_t GetCmdType(void);
-void    ClearCmd(void);

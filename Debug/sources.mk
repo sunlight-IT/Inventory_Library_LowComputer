@@ -26,8 +26,10 @@ SUBDIRS := \
 Core/Src \
 Core/Startup \
 Drivers/STM32F1xx_HAL_Driver/Src \
+Usr/communicate \
 Usr/component/book_database \
 Usr/component/cmd_process \
+Usr/component \
 Usr/log \
 Usr/module_apply \
 Usr/module_driver \

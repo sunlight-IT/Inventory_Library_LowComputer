@@ -1,1 +1,4 @@
-../Usr/module_apply/apply_motor.c:19:13:check_book	10
+../Usr/module_apply/apply_motor.c:25:6:app_servo_action_init	1
+../Usr/module_apply/apply_motor.c:27:6:app_action	11
+../Usr/module_apply/apply_motor.c:63:13:app_move	14
+../Usr/module_apply/apply_motor.c:117:13:app_reset	13

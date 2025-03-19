@@ -7,7 +7,8 @@
 
 #include "SystemTasks.h"
 
-#include "module_driver/driver_upper.h"
+#include "module_apply/app_communicate.h"
+#include "module_driver/driver_upp_uart.h"
 #include "module_driver/driver_wireless.h"
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
   // if (huart->Instance == UartX_Reader15693)
@@ -31,11 +32,18 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart, uint16_t Size) {
   }
 }
 
+static volatile uint32_t time_book_ack;
+
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
   if (htim->Instance == TIM1)  // 1ms
   {
+    time_book_ack++;
     // TimerTasks_WirelessModule();
     // TimerTasks_Reader15693();
     TimerTasks_ServoMotor();
+    // if (time_book_ack >= 500) {
+    //   book_ack_func();
+    //   time_book_ack = 0;
+    // }
   }
 }

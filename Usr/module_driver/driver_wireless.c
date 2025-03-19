@@ -4,6 +4,7 @@
 #include "component/cmd_process/cmd_process.h"
 #include "module_middle/middle_event_process.h"
 #include "stdbool.h"
+
 static UART_HandleTypeDef *m_uart;
 static DMA_HandleTypeDef  *m_dma;
 
@@ -14,8 +15,6 @@ static uint8_t rx_cache;
 static bool    flag = false;
 
 static uint8_t cmd = 0xff;
-
-static uint8_t book_buf[WIRELESS_MAX_BUF_LEN];
 
 static void wireless_packet_analys(void);
 
@@ -58,57 +57,25 @@ void wireless_packet_analys(void) {
   uint8_t  type     = rx_buf[0];
   uint16_t pack_len = rx_buf[4];
   uint8_t *recv_cmd;
-  bool     transmit_state = get_transmit_state();
+  // bool     transmit_state = get_transmit_state();
+  for (int i = 0; i < rx_len; i++)  //
+    LOGI("%02x", rx_buf[i]);
   LOGI("WIRLESS");
-  if (type == 0x70) {
-    if (CRC16_Calculate(&rx_buf, 5 + pack_len)) {
-      LOGE("CRC error");
-      return;
-    }
-    // lower computer recv
-    if (transmit_state) {
-      LOGE("transmit has occupied");
-      return;
-    }
-
-    transmit_using(true);
-    recv_cmd = get_cmd_cache();
+  if (type == 0x70 || type == 0xd0) {
+    recv_cmd = get_lower_cache();
     memcpy(recv_cmd, rx_buf, rx_len);
-    set_cmd_recv_len(rx_len);
+    set_lower_recv_len(rx_len);
+    set_lower_process(true);
+
+  } else {
+    LOGW("wirless recv error %02x", type);
+    return;
   }
-  // pack_len |= rx_buf[0];
-  // pack_len <<= 8;
-  // pack_len |= rx_buf[1];
-  // LOGI("%04x", pack_len);
-  // if (rx_len == 9) {
-  //   cmd    = rx_buf[5];
-  //   rx_len = 0;
-  // } else if (pack_len > 5) {
-  //   if (CRC16_Calculate(&rx_buf, pack_len)) {
-  //     LOGE("CRC error");
-  //     return;
-  //   }
 
-  // event_data_book(&(rx_buf[2]), pack_len);
-  // }
-}
-
-void wireless_receive(void) {
-  if (flag) {
-    for (int i = 0; i < rx_len; i++) LOGI("%02x", rx_buf[i]);
-    // LOGI("%02x", wireless_packet_analys())
-    flag = false;
+  if (CRC16_Calculate(rx_buf, 5 + pack_len)) {
+    LOGE("CRC error");
+    return;
   }
-}
-void ClearCmd(void) { cmd = 10; }
-
-uint8_t GetCmdType(void) {
-  // if (flag) {
-  // LOGI("Cmd is : %02x", cmd);
-  // flag = false;
-  return cmd;
-  //}
-  // return 10;
 }
 
 void receive_rx_data(void) {

@@ -1,0 +1,12 @@
+../Usr/module_apply/app_communicate.c:54:6:app_communicate_init	1
+../Usr/module_apply/app_communicate.c:59:6:app_comunicate	3
+../Usr/module_apply/app_communicate.c:73:6:lower_apply_improve	14
+../Usr/module_apply/app_communicate.c:201:6:upper_apply_improve	12
+../Usr/module_apply/app_communicate.c:303:6:book_ack_func	2
+../Usr/module_apply/app_communicate.c:310:6:move_action_flow	3
+../Usr/module_apply/app_communicate.c:344:6:init_flow	1
+../Usr/module_apply/app_communicate.c:357:6:book_info_flow	1
+../Usr/module_apply/app_communicate.c:364:9:set_upper_process	1
+../Usr/module_apply/app_communicate.c:365:9:set_lower_process	1
+../Usr/module_apply/app_communicate.c:366:9:get_action_mode	1
+../Usr/module_apply/app_communicate.c:368:10:get_syn_time_data	1

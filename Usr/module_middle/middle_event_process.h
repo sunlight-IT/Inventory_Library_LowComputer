@@ -9,6 +9,8 @@ typedef enum {
   EVENT_Wirless,
   EVENT_UpperUart,
   EVENT_MotorUart,
+  EVENT_LowSend,
+  EVENT_UpSend,
   // kTrace,
   // kShow,
   // 事件处理

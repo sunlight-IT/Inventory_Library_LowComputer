@@ -29,9 +29,10 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "component/cmd_process/cmd_process.h"
+#include "component/endianness_change.h"
 #include "log/my_log.h"
 #include "module_driver/driver_motor.h"
-#include "module_driver/driver_upper.h"
+#include "module_driver/driver_upp_uart.h"
 #include "module_driver/driver_wireless.h"
 #include "module_middle/middle_event_process.h"
 #include "tick/tick.h"
@@ -84,8 +85,9 @@ static uint8_t flag;
 static ENUM_CMD move_state      = kWirelessIdle;
 static uint32_t distance_target = 300;
 
-static uint8_t crc_cal[] = {0xd1, 0x10, 0x01, 0x0a, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd1};
-
+static uint8_t  crc_cal[] = {0xd0, 0x20, 0x01, 0x0a, 0x0f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0C, 0xA1, 0xd1};
+uint16_t        test_1    = 0x1234;
+uint32_t        test_2    = 0x12345678;
 static uint16_t CRC16_Calculate(uint8_t *data, uint8_t len) {
   uint16_t crc16 = 0xffff;
   uint16_t temp  = 0;
@@ -109,7 +111,6 @@ static uint16_t CRC16_Calculate(uint8_t *data, uint8_t len) {
  * @brief  The application entry point.
  * @retval int
  */
-
 int main(void) {
   /* USER CODE BEGIN 1 */
 
@@ -152,94 +153,96 @@ int main(void) {
   upper_uart_init();
 
   motor_uart_init();
-  servo_info_updata(KGoRight, 30);
+
+  servo_config_init();
+
+  app_communicate_init();
+  app_servo_action_init();
+  // servo_info_updata(KGoRight, 30);
   /* USER CODE END 2 */
-  CRC16_Calculate(crc_cal, sizeof(crc_cal));
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1) {
     process_event();
+
     Events_MainLogic();
 
-    // send_lower(kInit, 0x05);
-    // LOGI("TEST");
-    // if (get_transmit_state()) {  // 接收到数据开始转移
-    // transfer_process();
-    //}
-    if (GetMoterFlag() >= 22) {
-      transfer_process();
+    app_comunicate();
+    app_action();
+    // if (GetMoterFlag() >= 22) {
+    //   app_comunicate();
+    //   if ((get_action_mode() == 0x01) && !pandian_flag) {
+    //     LOGE("TEST");
+    //     switch (move_state) {
+    //       case kWirelessIdle:
+    //         move_state = kWirelessStart;
+    //         break;
+    //       case kWirelessStart:
+    //         if (servo_move(KGoRight)) {
+    //           servo_info_updata(KGoRight, 30);
+    //           pandian_flag = 1;
+    //         }
+    //         break;
+    //     }
+    //   }
 
-      if ((get_action_mode() == 0x01) && !pandian_flag) {
-        switch (move_state) {
-          case kWirelessIdle:
-            move_state = kWirelessStart;
-            break;
-          case kWirelessStart:
-            if (servo_move(KGoRight)) {
-              servo_info_updata(KGoRight, 30);
-              pandian_flag = 1;
-            }
-            break;
-        }
-      }
+    //   switch (pandian_flag) {
+    //     case 1:
+    //       uint16_t pos1    = get_Position_mm(GetMoterStateReg(), 4);
+    //       uint16_t pos_tar = get_servo_config_pos();
+    //       uint8_t  tmp     = pos_tar;
+    //       // pos_tar >>= 8;
+    //       // pos_tar |= ((uint16_t)tmp) << 8;
+    //       LOGI("pos_tar3 is :%04x", pos_tar);
+    //       LOGI("cur pos is %04x", pos1);
+    //       if (pos1 >= pos_tar - 10 && pos1 <= pos_tar + 100 && pos1 != 0xff) {
+    //         pandian_flag = 2;
+    //         LOGI("check finish %d", pandian_flag);
+    //       }
+    //       break;
+    //     case 2:
+    //       if (servo_speed_set(0)) {
+    //         pandian_flag = 25;
+    //         LOGI("Back %d ", pandian_flag);
+    //       }
 
-      switch (pandian_flag) {
-        case 1:
-          uint16_t pos1    = get_Position_mm(GetMoterStateReg(), 4);
-          uint16_t pos_tar = get_servo_set_info()->pos;
-          uint8_t  tmp     = pos_tar;
-          pos_tar >>= 8;
-          pos_tar |= ((uint16_t)tmp) << 8;
-          LOGI("pos_tar3 is :%04x", pos_tar);
-          LOGI("cur pos is %04x", pos1);
-          if (pos1 >= pos_tar - 10 && pos1 <= pos_tar + 10 && pos1 != 0xff) {
-            pandian_flag = 2;
-            LOGI("check finish %d", pandian_flag);
-          }
-          break;
-        case 2:
-          if (servo_speed_set(0)) {
-            // pandian_flag = 3;
-            LOGI("Back %d ", pandian_flag);
-          }
+    //       break;
+    //     case 3:
+    //       if (servo_move(KGoLeft)) {
+    //         servo_info_updata(KGoLeft, 30);
+    //         pandian_flag = 4;
 
-          break;
-        case 3:
-          if (servo_move(KGoLeft)) {
-            servo_info_updata(KGoLeft, 30);
-            pandian_flag = 4;
+    //         LOGI("Back move %d", pandian_flag);
+    //       }
 
-            LOGI("Back move %d", pandian_flag);
-          }
+    //       break;
+    //     case 4:
+    //       uint16_t pos = get_Position_mm(GetMoterStateReg(), 4);
+    //       if (pos <= distance_target - 100 && pos != 0) {
+    //         pandian_flag = 5;
+    //         LOGI("back finish %d", pandian_flag);
+    //       }
+    //       break;
+    //     case 5:
+    //       if (servo_speed_set(0)) {
+    //         pandian_flag = 6;
+    //         LOGI("OK %d ", pandian_flag);
+    //       }
 
-          break;
-        case 4:
-          uint16_t pos = get_Position_mm(GetMoterStateReg(), 4);
-          if (pos <= distance_target - 100 && pos != 0) {
-            pandian_flag = 5;
-            LOGI("back finish %d", pandian_flag);
-          }
-          break;
-        case 5:
-          if (servo_speed_set(0)) {
-            pandian_flag = 6;
-            LOGI("OK %d ", pandian_flag);
-          }
+    //       break;
+    //     default:
 
-          break;
-        default:
+    //       break;
+    // }
 
-          break;
-      }
+    /* USER CODE END WHILE */
 
-      /* USER CODE END WHILE */
-
-      /* USER CODE BEGIN 3 */
-    }
+    /* USER CODE BEGIN 3 */
+    // }
     /* USER CODE END 3 */
   }
 }
-
 /**
  * @brief System Clock Configuration
  * @retval None

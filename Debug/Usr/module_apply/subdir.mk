@@ -5,12 +5,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
+../Usr/module_apply/app_communicate.c \
 ../Usr/module_apply/apply_motor.c 
 
 OBJS += \
+./Usr/module_apply/app_communicate.o \
 ./Usr/module_apply/apply_motor.o 
 
 C_DEPS += \
+./Usr/module_apply/app_communicate.d \
 ./Usr/module_apply/apply_motor.d 
 
 
@@ -21,7 +24,7 @@ Usr/module_apply/%.o Usr/module_apply/%.su Usr/module_apply/%.cyclo: ../Usr/modu
 clean: clean-Usr-2f-module_apply
 
 clean-Usr-2f-module_apply:
-	-$(RM) ./Usr/module_apply/apply_motor.cyclo ./Usr/module_apply/apply_motor.d ./Usr/module_apply/apply_motor.o ./Usr/module_apply/apply_motor.su
+	-$(RM) ./Usr/module_apply/app_communicate.cyclo ./Usr/module_apply/app_communicate.d ./Usr/module_apply/app_communicate.o ./Usr/module_apply/app_communicate.su ./Usr/module_apply/apply_motor.cyclo ./Usr/module_apply/apply_motor.d ./Usr/module_apply/apply_motor.o ./Usr/module_apply/apply_motor.su
 
 .PHONY: clean-Usr-2f-module_apply
 

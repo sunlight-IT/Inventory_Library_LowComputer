@@ -408,9 +408,9 @@ void Event_Movement_ServoMotor(void) {
     } break;
     case 6: {
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      Uart_Send_MovementRegister_ServoMotor(3, 20);  // 设置速度1
+      // Uart_Send_MovementRegister_ServoMotor(3, 20);  // 设置速度1
 
-      ServoMotor.Flag_Event[2] = 7;  // 等待串口返回，赋值8，超时赋值6
+      ServoMotor.Flag_Event[2] = 16;  // 等待串口返回，赋值8，超时赋值6
     } break;
     case 8: {
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
@@ -454,13 +454,14 @@ void Event_Movement_ServoMotor(void) {
     // 缺一个开始信号
     case 16: {
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      Uart_Send_MovementRegister_ServoMotor(4, DI2_PulseClear_Start_Data_P2_11);
-      ServoMotor.Flag_Event[2] = 19;  // 等待串口返回，赋值18，超时赋值16
+
+      // Uart_Send_MovementRegister_ServoMotor(4, DI2_PulseClear_Start_Data_P2_11);
+      ServoMotor.Flag_Event[2] = 16;  // 等待串口返回，赋值18，超时赋值16
 
     } break;
     case 20: {  // 设置了PT模式，发送清除脉冲的指令，设置DI2
       ResetTimerFlag_ServoMotor(&ServoMotor.TimerFlag[1]);
-      Uart_Send_MovementRegister_ServoMotor(4, DI2_PulseClear_End_Data_P2_11);
+      // Uart_Send_MovementRegister_ServoMotor(4, DI2_PulseClear_End_Data_P2_11);
       ServoMotor.Flag_Event[2] = 21;  // 等待串口返回，赋值20，超时赋值18
     } break;
     case 22: {  // 设置了PT模式，发送清除脉冲的指令，复位DI2
@@ -762,7 +763,7 @@ void UartRegroup_ASCII_ServoMotor(void) {
     } break;
     case 3: {  // 0x0D
       Flag_UartRegroup_ASCII_ServoMotor = 4;
-      if (ServoMotor.Flag_Event[2] >= 22) {
+      if (ServoMotor.Flag_Event[2] >= 16) {
         // if (!clear_falg) {
         //   memset(UartRxd_ServoMotor, 0, 255);
         //   clear_falg = true;

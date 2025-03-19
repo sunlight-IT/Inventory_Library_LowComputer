@@ -116,8 +116,6 @@ void Error_Handler(void);
 #define Direction_Ctl_BLDCMotor_GPIO_Port GPIOB
 #define Speed_PWMCtl_BLDCMotor_Pin GPIO_PIN_5
 #define Speed_PWMCtl_BLDCMotor_GPIO_Port GPIOB
-#define HallCount_BLDCMotor_Pin GPIO_PIN_6
-#define HallCount_BLDCMotor_GPIO_Port GPIOB
 #define SCL_OLED_Pin GPIO_PIN_8
 #define SCL_OLED_GPIO_Port GPIOB
 #define SDA_OLED_Pin GPIO_PIN_9

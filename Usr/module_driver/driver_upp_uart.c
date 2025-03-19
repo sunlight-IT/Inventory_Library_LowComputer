@@ -1,7 +1,8 @@
-#include "driver_upper.h"
+#include "driver_upp_uart.h"
 
-#include "component/cmd_process/cmd_process.h"
+// #include "component/cmd_process/cmd_process.h"
 #include "log/my_log.h"
+#include "module_apply/app_communicate.h"
 #include "module_middle/middle_event_process.h"
 #include "module_middle/middle_fsm.h"
 
@@ -55,34 +56,25 @@ void upper_packet_analys(void) {
   uint8_t  type     = rx_buf[0];
   uint16_t pack_len = rx_buf[4];
   uint8_t *recv_cmd;
-  bool     transmit_state = get_transmit_state();
+  // bool     transmit_state = get_transmit_state();
 
   for (int i = 0; i < rx_len; i++)  //
     LOGI("%02x", rx_buf[i]);
 
-  if (type == 0xd0) {
-    if (CRC16_Calculate(rx_buf, rx_len)) {
-      LOGE("CRC error");
-      return;
-    }
-
-    if (transmit_state) {
-      LOGE("transmit has occupied");
-      return;
-    }
-
-    transmit_using(true);
-
-    // lower computer recv
-    recv_cmd = get_cmd_cache();
-
+  if (type == 0x70 || type == 0xd0) {
+    recv_cmd = get_upper_cache();
     memcpy(recv_cmd, rx_buf, rx_len);
-    // for (int i = 0; i < 10; i++)  //
-    //   LOGI("%02x", recv_cmd[i]);
+    set_upper_recv_len(rx_len);
+    set_upper_process(true);
+    LOGI("TYPE IS %02x", type);
+  } else {
+    LOGW("upper recv error %04x", type);
+    return;
+  }
 
-    // LOGI("%08x", (get_cmd_cache())[0]);
-    // LOGI("%08x", recv_cmd);
-    set_cmd_recv_len(rx_len);
+  if (CRC16_Calculate(rx_buf, rx_len)) {
+    LOGE("CRC error");
+    return;
   }
 }
 

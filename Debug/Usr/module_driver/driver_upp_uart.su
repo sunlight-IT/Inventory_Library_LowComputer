@@ -1,0 +1,6 @@
+../Usr/module_driver/driver_upp_uart.c:20:6:upper_uart_reg_handle	16	static
+../Usr/module_driver/driver_upp_uart.c:25:6:upper_uart_init	8	static
+../Usr/module_driver/driver_upp_uart.c:31:21:GetUpperUartHandle	8	static
+../Usr/module_driver/driver_upp_uart.c:38:17:CRC16_Calculate	32	static
+../Usr/module_driver/driver_upp_uart.c:55:6:upper_packet_analys	24	static
+../Usr/module_driver/driver_upp_uart.c:81:6:upper_receive_rx_data	8	static

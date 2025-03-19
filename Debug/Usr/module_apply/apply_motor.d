@@ -1,5 +1,6 @@
 Usr/module_apply/apply_motor.o: ../Usr/module_apply/apply_motor.c \
  ../Usr/module_apply/apply_motor.h \
+ S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/communicate/middle_communicate_both.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/log/my_log.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_motor.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h \
@@ -43,6 +44,7 @@ Usr/module_apply/apply_motor.o: ../Usr/module_apply/apply_motor.c \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_event_process.h \
  S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/tick/tick.h
 ../Usr/module_apply/apply_motor.h:
+S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/communicate/middle_communicate_both.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/log/my_log.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_driver/driver_motor.h:
 S:/WorkeSpace/SY_Workplace/WorkSpace/Inventory_equipment/Inventory_equipment/Usr/module_middle/middle_fsm.h:

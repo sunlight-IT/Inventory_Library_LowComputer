@@ -1,0 +1,3 @@
+../Usr/module_middle/middle_book_database.c:22:6:init_static_list	16	static
+../Usr/module_middle/middle_book_database.c:30:6:input_book_info	24	static
+../Usr/module_middle/middle_book_database.c:67:20:output_book_info	56	static
